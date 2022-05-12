@@ -1,0 +1,114 @@
+{% extends 'quiz/header.html' %} {% block content %} {% load static %}
+<div class="container">
+  <h1>Bem-vindo ao Questionário Desastre</h1>
+
+  <div align="right " id="displaytimer"><b>Timer: 0 seconds</b></div>
+
+  <form method="post" action="">
+    {% csrf_token %}
+    <div class="tab">
+      {% for q in questions%}
+      <button class="tablinks" type="button" onclick="openQuestion(event, '{{q.id}}')" name="follow" value="unfollow">
+        PERGUNTA {{q.id}}
+      </button>
+      {% endfor %}
+    </div>
+    <br />    
+    {% for q in questions%}
+    <div id="{{q.id}}" class="tabcontent" style="display: none;">
+      <div class="form-group">
+        <label for="question">{{q.pergunta}}</label>
+      </div>
+      <div class="form-check">
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="{{q.pergunta}}"
+            id="gridRadios1"
+            value="{{q.alternativa1}}"
+          />
+          <label class="form-check-label" for="gridRadios1">
+            {{q.alternativa1}}
+          </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="{{q.pergunta}}"
+            id="gridRadios2"
+            value="{{q.alternativa2}}"
+          />
+          <label class="form-check-label" for="gridRadios2">
+            {{q.alternativa2}}
+          </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="{{q.pergunta}}"
+            id="gridRadios1"
+            value="{{q.alternativa3}}"
+          />
+          <label class="form-check-label" for="gridRadios1">
+            {{q.alternativa3}}
+          </label>
+        </div>
+        <div class="form-check">
+          <input
+            class="form-check-input"
+            type="radio"
+            name="{{q.pergunta}}"
+            id="gridRadios2"
+            value="{{q.alternativa4}}"
+          />
+          <label class="form-check-label" for="gridRadios2">
+            {{q.alternativa4}}
+          </label>
+        </div>
+        <br />
+      </div>
+    </div>
+    {% endfor %}
+    <input id="timer" type="hidden" name="timer" value="" />
+    <br />
+    <button type="submit" class="btn btn-primary" name="follow" value="follow">Score</button>
+  </form>
+  {% block script %}
+  <script>
+    const timer = document.getElementById("displaytimer");
+    console.log(timer.textContent);
+    const inputtag = document.getElementById("timer");
+
+    t = 0;
+    setInterval(() => {
+      t += 1;
+      timer.innerHTML = "<b>Timer: " + t + " seconds</b>";
+      inputtag.value = t;
+    }, 1000);
+
+    function openQuestion(evt, questionId) {
+        //declare variables
+        var i, tabcontent, tablinks;
+
+        //Get all elements with clas='tabcontent' and hide them
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i=0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i=0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace("active", "");
+        }
+
+        //Show the current tab and add an active class to the button that opened the tab
+        document.getElementById(questionId).style.display = "block";
+        evt.currentTarget.className += "active";
+    }
+  </script>
+  {% endblock script %}
+</div>
+{% endblock %}

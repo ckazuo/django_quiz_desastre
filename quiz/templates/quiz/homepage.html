@@ -1,0 +1,15 @@
+{% extends 'quiz/header.html' %} {% block content %} {% load static %}
+<div class="container">
+  <h1>Univesp PI VIII Quiz Desastre</h1>
+  <br />
+  <h5>
+    Desenvolvimento de aplicação web em formato de jogo lúdico (quiz) sobre o
+    enfrentamento inicial realizado por leigos frente às catástrofes mais
+    recorrentes (inundações, incêndios florestais e deslizamentos de terra)
+  </h5>
+  <br />
+  <button type="submit" class="btn btn-primary">
+    <a href="{% url 'quiz:questionario' %}">COMEÇAR QUIZ</a>
+  </button>
+</div>
+{% endblock %}
