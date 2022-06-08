@@ -24,3 +24,9 @@ class addQuestionForm(ModelForm):
 	class Meta:
 		model=Questionario
 		fields="__all__"
+
+class uploadRanking(ModelForm):
+	name = forms.TextInput()
+	class Meta:
+		model = Ranking
+		fields = ['username']

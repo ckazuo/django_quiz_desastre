@@ -9,7 +9,7 @@
     <div class="tab">
       {% for q in questions%}
       <button class="tablinks" type="button" onclick="openQuestion(event, '{{q.id}}')" name="follow" value="unfollow">
-        PERGUNTA {{q.id}}
+        PERGUNTA {{ forloop.counter }}
       </button>
       {% endfor %}
     </div>
@@ -19,87 +19,64 @@
       <div class="form-group">
         <label for="question">{{q.pergunta}}</label>
       </div>
-      <div class="form-check">
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="{{q.pergunta}}"
-            id="gridRadios1"
-            value="{{q.alternativa1}}"
-          />
-          <label class="form-check-label" for="gridRadios1">
-            {{q.alternativa1}}
-          </label>
-        </div>
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="{{q.pergunta}}"
-            id="gridRadios2"
-            value="{{q.alternativa2}}"
-          />
-          <label class="form-check-label" for="gridRadios2">
-            {{q.alternativa2}}
-          </label>
-        </div>
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="{{q.pergunta}}"
-            id="gridRadios1"
-            value="{{q.alternativa3}}"
-          />
-          <label class="form-check-label" for="gridRadios1">
-            {{q.alternativa3}}
-          </label>
-        </div>
-        <div class="form-check">
-          <input
-            class="form-check-input"
-            type="radio"
-            name="{{q.pergunta}}"
-            id="gridRadios2"
-            value="{{q.alternativa4}}"
-          />
-          <label class="form-check-label" for="gridRadios2">
-            {{q.alternativa4}}
-          </label>
-        </div>
-        <br />
+
+      <div id="{{q.id}}" class="btn-group-vertical" role="group" aria-label={{q.pergunta}}>
+          <br/>
+          <button type="button" id="gridButton1" onclick="checkAnswer(event, '{{q.id}}', id,'{{q.resposta}}', '{{q.alternativa1}}')" value="{{q.alternativa1}}" class="btn btn-primary">{{q.alternativa1}}</button>
+          <br/>
+          <button type="button" id="gridButton2" onclick="checkAnswer(event, '{{q.id}}', id, '{{q.resposta}}', '{{q.alternativa2}}')" value="{{q.alternativa2}}" class="btn btn-primary">{{q.alternativa2}}</button>
+          <br/>
+          <button type="button" id="gridButton3" onclick="checkAnswer(event, '{{q.id}}', id, '{{q.resposta}}', '{{q.alternativa3}}')" value="{{q.alternativa3}}" class="btn btn-primary">{{q.alternativa3}}</button>
+          <br/>
+          <button type="button" id="gridButton4" onclick="checkAnswer(event, '{{q.id}}', id, '{{q.resposta}}', '{{q.alternativa4}}')" value="{{q.alternativa4}}" class="btn btn-primary">{{q.alternativa4}}</button>
+          <br/>
+          <label id="explica" for="explica" style="display: none;">{{q.explica}}</label>
+          <br/>
       </div>
+
     </div>
     {% endfor %}
     <input id="timer" type="hidden" name="timer" value="" />
+    <input id="correto" type="hidden" name="correto" value="" />
+    <input id="errado" type="hidden" name="errado" value="" />
     <br />
-    <button type="submit" class="btn btn-primary" name="follow" value="follow">Score</button>
+    <form>
+      <button type="submit" id="btnresultado" class="btn btn-primary" name="follow" value="follow" style="display: none;">Resultado</button>
+    </form>
+
+
   </form>
   {% block script %}
   <script>
-    const timer = document.getElementById("displaytimer");
-    console.log(timer.textContent);
-    const inputtag = document.getElementById("timer");
 
-    t = 0;
-    setInterval(() => {
-      t += 1;
-      timer.innerHTML = "<b>Timer: " + t + " seconds</b>";
-      inputtag.value = t;
-    }, 1000);
+    function callTimer() {
+      const timer = document.getElementById("displaytimer");
+      console.log(timer.textContent);
+      const inputtag = document.getElementById("timer");
 
-    function openQuestion(evt, questionId) {
+      t = 0;
+      setInterval(() => {
+        t += 1;
+        timer.innerHTML = "<b>Timer: " + t + " seconds</b>";
+        inputtag.value = t;
+      }, 1000);
+
+    }
+
+    callTimer();
+
+    function openQuestion(evt, questionId ) {
         //declare variables
         var i, tabcontent, tablinks;
 
-        //Get all elements with clas='tabcontent' and hide them
+        //Get all elements with class='tabcontent' and hide them
         tabcontent = document.getElementsByClassName("tabcontent");
         for (i=0; i < tabcontent.length; i++) {
             tabcontent[i].style.display = "none";
         }
 
-        tablinks = document.getElementsByClassName("tablinks");
+        //Get all elements with class='tablinks' and remove the active  
+        tablinks = document.getElementsByClassName("btn btn-info");
         for (i=0; i < tablinks.length; i++) {
             tablinks[i].className = tablinks[i].className.replace("active", "");
         }
@@ -107,7 +84,60 @@
         //Show the current tab and add an active class to the button that opened the tab
         document.getElementById(questionId).style.display = "block";
         evt.currentTarget.className += "active";
+
     }
+
+    function  checkAnswer(evt, questionId, buttonId, resposta, alternativa) {
+        // declare variables
+        var i, count, tabcontent, buttons;
+        questiontab = document.querySelectorAll("div.btn-group-vertical");
+        console.log(questiontab);
+        // get the children buttons
+        for (i=0; i < questiontab.length; i++) {
+          if (questiontab[i].id === questionId) {
+            buttons = questiontab[i].children;
+          }
+        }
+        console.log(buttons);
+        // verify if the answer is correct
+        for (i=0; i < buttons.length; i++) {
+          if (buttons[i].type === 'button') {
+            buttons[i].disabled=true;
+            if (buttons[i].id === buttonId) {             
+                if (resposta === alternativa) {
+                  buttons[i].className = buttons[i].className.replace("btn btn-primary", "btn btn-success");
+                }
+                else {
+                  buttons[i].className = buttons[i].className.replace("btn btn-primary", "btn btn-danger");
+                }               
+              }
+          }
+          if (buttons[i].id === 'explica') {
+            buttons[i].style.display = "block";
+          }
+        }
+
+        // verify all questions are done
+        var right, wrong;
+        wrong = document.querySelectorAll(".btn.btn-danger");
+        right = document.querySelectorAll(".btn.btn-success");
+        console.log(wrong);
+        console.log(right);
+        count = wrong.length + right.length;
+
+        console.log(count);
+        // if all question are answered
+        if (count === questiontab.length) {
+          resultado = document.querySelector("#btnresultado");
+          resultado.style.display = "block";
+          const inputwrong = document.getElementById("errado");
+          const inputright = document.getElementById("correto");
+          inputwrong.value = wrong.length;
+          inputright.value = right.length;
+        }
+
+    }  
+
   </script>
   {% endblock script %}
 </div>
