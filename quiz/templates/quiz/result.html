@@ -25,7 +25,8 @@
         <div class="mb-3">
           {{form}}
           <label for="exampleInputScore" class="form-label">SCORE</label>
-          <input type="score" name="score" id="InputScore" value ="{{score}}" disabled="true">
+          <input type="score" name="score1" id="InputScore" value ="{{score}}" disabled="true">
+          <input id="score" type="hidden" name="score" value="{{score}}" />
           <div id="nomeHelp" class="form-text">Nunca vamos compartilhar seu nome com ninguém.</div>
         </div>
         <button type="submit" class="btn btn-primary" name="follow" value="follow">Salvar Pontuação</button>

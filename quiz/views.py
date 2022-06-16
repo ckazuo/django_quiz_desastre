@@ -24,7 +24,7 @@ def questionario(request):
 		total=0
 		for q in questions:
 			total+=1
-		score = (wrong*-2)+(correct*10) 
+		score = (wrong*-1)+(correct*15) 
 		print(score)
 		print(total)
 		percent = round(score / (total*10) * 100, 2)
@@ -45,6 +45,7 @@ def questionario(request):
 		questions=Questionario.objects.all()
 		my_list = list(questions)
 		random.shuffle(my_list)
+		print(my_list)
 		number = 1
 		context = {
             'questions':my_list,
@@ -54,8 +55,11 @@ def questionario(request):
 
 def ranking(request):
 	if request.POST:
+		print(request)
 		form = uploadRanking(request.POST)
 		score = request.POST.get('score')
+		print(f"User {request.POST.get('username')}")
+		print(f"Scored {request.POST.get('score')}")
 		if form.is_valid():
 			name=request.POST.get('username')
 			reg = Ranking(username = name, score = score)
