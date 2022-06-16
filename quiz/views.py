@@ -22,12 +22,14 @@ def questionario(request):
 		wrong=int(request.POST.get('errado'))
 		correct=int(request.POST.get('correto'))
 		total=0
+		point_right=15
+		point_wrong=-1
 		for q in questions:
 			total+=1
-		score = (wrong*-1)+(correct*15) 
+		score = (wrong*point_wrong)+(correct*point_right) 
 		print(score)
 		print(total)
-		percent = round(score / (total*10) * 100, 2)
+		percent = round(correct / total * 100, 2)
 		if percent < 0:
 			percent = 0
 		print(percent)
