@@ -1,28 +1,28 @@
-{% extends 'quiz/header.html' %}
- 
-{% block content %}
- 
-<div class="container ">
-        
-    <div class="card-columns" style="padding: 10px; margin: 20px;">
-        <div class="card" align="centre " style="width: 32rem; border:5px black solid">
-            <!--img class="card-img-top" src="http://kmit.in/emagazine/wp-content/uploads/2018/02/karnataka-results.jpg" alt="Card image cap"-->
-            <div class="card-body">
-                <h5 class="card-title">Ranking TOP 10</h5>
- 
-                <table>
-                    {% for user in ranking %}
-                    <tr>
-                        <td>{{ user.username }}</td>
-                        <td>{{ user.score }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>              
+{% extends 'quiz/header.html' %} {% block content %}
 
-            </div>
-        </div>
+<div class="container">
+  <div class="card-columns" style="padding: 10px; margin: 20px">
+    <div
+      class="card"
+      align="centre "
+      style="width: 32rem; border: 5px black solid"
+    >
+      <!--img class="card-img-top" src="http://kmit.in/emagazine/wp-content/uploads/2018/02/karnataka-results.jpg" alt="Card image cap"-->
+      <div class="card-body">
+        <h1 class="card-title">Ranking TOP 10</h1>
+
+        <table>
+          {% for user in ranking %}
+          <tr>
+            <td><h3>{{ user.username }}</h3></td>
+            <td></td>
+            <td><h3>{{ user.score }}</h3></td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
     </div>
- 
+  </div>
 </div>
- 
+
 {% endblock %}
