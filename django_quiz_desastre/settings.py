@@ -24,7 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 
-SECRET_KEY = config("SECRET_KEY") # this is to replace the secret key you cut away before
+#SECRET_KEY = config("SECRET_KEY") # this is to replace the secret key you cut away before
+SECRET_KEY = '%itl!ypb(ue$ie*dt!_(&#lxm6k#+hslqva3b99b#1fg81_^1f'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
